@@ -11,6 +11,11 @@ public class VolumeSlider : MonoBehaviour
     [SerializeField] AudioClip MainaudioClip = null;
     [SerializeField] AudioClip SFXudioClip = null;
 
+    [SerializeField] private AudioSource musicSource;
+    [SerializeField] private AudioSource sfxSource;
+    public Toggle musicToggle;
+
+
 
     private void Start()
     {
@@ -37,9 +42,10 @@ public class VolumeSlider : MonoBehaviour
         }
     }
 
-    public void ChangeVolume()
+    public void ChangeVolumeMusic(float Volume)
     {
-        AudioListener.volume = volumeSlider.value;
+        volumeSlider.value = Volume;
+        musicSource.volume = volumeSlider.value;
         Save();
     }
 
@@ -56,7 +62,7 @@ public class VolumeSlider : MonoBehaviour
 
     public void ChangeVolumeSFX()
     {
-        AudioListener.volume = SFXSlider.value;
+        sfxSource.volume = SFXSlider.value;
         SaveSFX();
     }
 
@@ -68,6 +74,35 @@ public class VolumeSlider : MonoBehaviour
     private void SaveSFX()
     {
         PlayerPrefs.SetFloat("SFXVolume", SFXSlider.value);
+    }
+    public void ToggleMusic(int logic)
+    {
+        if (musicToggle.isOn == true)
+        {
+            logic = 1;
+            volumeSlider.interactable = true;
+            ChangeVolumeMusic(PlayerPrefs.GetFloat("SaveSFX"));
+        }
+        else if (musicToggle.isOn == false)
+        {
+            logic = 0;
+            volumeSlider.interactable = false;
+            musicSource.volume = PlayerPrefs.GetFloat("musicVolume", 0);
+        }
+
+        PlayerPrefs.SetInt("musicToggleSaveKey", logic);
+    }
+    public void EasyMode()
+    {
+        PlayerPrefs.SetString("DifficultySave", "Easy");
+    }
+    public void MediumMode()
+    {
+        PlayerPrefs.SetString("DifficultySave", "Normal");
+    }
+    public void HardMode()
+    {
+        PlayerPrefs.SetString("DifficultySave", "Hard");
     }
 
 

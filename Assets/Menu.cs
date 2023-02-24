@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
@@ -12,9 +13,16 @@ public class Menu : MonoBehaviour
         startButton.Select();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void StartButton()
     {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
+
+    public void QuitButton()
+    {
+        Debug.Log("Quit");
+        UnityEditor.EditorApplication.isPlaying = false;
+        Application.Quit();
         
     }
 }
